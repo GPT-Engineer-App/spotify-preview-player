@@ -1,6 +1,6 @@
 // Complete the Index page component here
 // Use chakra-ui
-import { Box, Input, Button, Text, VStack, Image, useToast } from '@chakra-ui/react';
+import { Box, Input, Button, Text, VStack, Image, useToast, useEffect } from '@chakra-ui/react';
 import { useState } from 'react';
 
 const Index = () => {
@@ -8,11 +8,38 @@ const Index = () => {
   const [songData, setSongData] = useState(null);
   const toast = useToast();
 
+const fetchToken = async () => {
+  try {
+    const response = await fetch('/api/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `grant_type=client_credentials&client_id=${process.env.REACT_APP_SPOTIFY_CLIENT_ID}&client_secret=${process.env.REACT_APP_SPOTIFY_CLIENT_SECRET}`
+    });
+    const data = await response.json();
+    localStorage.setItem('spotifyToken', data.access_token);
+  } catch (error) {
+    toast({
+      title: 'Failed to refresh token',
+      description: error.message,
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+    });
+  }
+};
+
+  useEffect(() => {
+    fetchToken();
+  }, []);
+
   const handleSearch = async () => {
+    const token = localStorage.getItem('spotifyToken');
     try {
       const response = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(search)}&type=track&limit=1`, {
         headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_SPOTIFY_AUTH_TOKEN}`
+          Authorization: `Bearer ${token}`
         }
       });
       const data = await response.json();
