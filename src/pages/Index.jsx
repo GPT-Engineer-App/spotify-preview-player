@@ -1,6 +1,7 @@
 // Complete the Index page component here
 // Use chakra-ui
-import { Box, Input, Button, Text, VStack, Image, useToast, useEffect } from '@chakra-ui/react';
+import { Box, Input, Button, Text, VStack, Image, useToast } from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
 import { useState } from 'react';
 
 const Index = () => {
