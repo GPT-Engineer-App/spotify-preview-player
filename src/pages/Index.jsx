@@ -2,7 +2,6 @@
 // Use chakra-ui
 import { Box, Input, Button, Text, VStack, Image, useToast } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
-import { useState } from 'react';
 
 const Index = () => {
   const [search, setSearch] = useState('');
